@@ -1,1 +1,1 @@
-# alghorithmic-trading-strategies
+# applied-alghorithmic-trading-strategies
