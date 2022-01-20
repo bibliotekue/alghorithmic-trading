@@ -2,34 +2,18 @@ import json
 import requests
 import tinvest
 import pandas as pd
-from secrets import TOKEN
+from secrets import TOKEN, CONFIG_PATH
 
-import webscrapper
-import analyzer
-
+from extractor import Extractor
 
 # get client instance
 client = tinvest.SyncClient(TOKEN)
 
-# get portfolio and currencies balance
-portfolio = client.get_portfolio()
-currencies = client.get_portfolio_currencies()
 
-web_data = webscrapper.extract_web_data(index=webscrapper.INDEXES['NASDAQ'])
-portfolio_data = analyzer.extract_portfolio_data(portfolio, web_data['Symbol'].values)
+surfer = Extractor(client_instance=client,
+                   config_path=CONFIG_PATH)
 
-# get balances
-usd_balance = currencies.payload.currencies[2].balance
-total_investments = sum(portfolio_data['asset_investments'])
+surfer.run()
 
-total_balance = total_investments + usd_balance
-
-# weight calculation
-for elem in portfolio_data.itertuples():
-    ticker = elem[1]
-    asset_investments = elem[5]
-    weight = asset_investments / total_balance
-    portfolio_data.loc[portfolio_data['asset'] == ticker, 'weight'] = weight
-
-print(portfolio_data)
+print(surfer.portfolio_data)
 
