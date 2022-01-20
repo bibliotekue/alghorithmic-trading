@@ -1,15 +1,39 @@
 {
-  "url_info": {
-    "url": "https://www.slickcharts.com/",
-    "header": {"User-Agent": "Mozilla/5.0"},
-    "parser": "lxml",
-    "tag": "table",
-    "attrs": "table table-hover table-borderless table-sm",
-    "index": "nasdaq100",
-    "columns_for_web_data": ["#", "Company", "Symbol", "Weight", "Price"]
+  "extractor": {
+    "url_info": {
+      "url": "https://www.slickcharts.com/",
+      "header": {
+        "User-Agent": "Mozilla/5.0"
+      },
+      "parser": "lxml",
+      "tag": "table",
+      "attrs": "table table-hover table-borderless table-sm",
+      "index": "nasdaq100",
+      "columns_for_web_data": [
+        "#",
+        "Company",
+        "Symbol",
+        "Weight",
+        "Price"
+      ]
+    },
+    "portfolio_info": {
+      "columns_for_portfolio_data": [
+        "asset",
+        "amount",
+        "price",
+        "weight",
+        "asset_investments"
+      ]
+    }
   },
-  "portfolio_info": {
-    "columns_for_portfolio_data": ["asset", "amount", "price", "weight", "asset_investments"]
+  "allocator": {
+    "columns_for_recommendation": [
+      "asset",
+      "required_investments",
+      "required_weight",
+      "required_amount",
+      "official_price"]
   }
 
 }

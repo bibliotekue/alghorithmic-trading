@@ -7,7 +7,7 @@ import funcs
 class Extractor:
 
     def __init__(self, client_instance, config_path):
-        self.config = funcs.get_config(config_path)
+        self.config = funcs.get_config(config_path)['extractor']
 
         self.portfolio_instance = client_instance.get_portfolio()
         self.currencies_instance = client_instance.get_portfolio_currencies()
@@ -30,10 +30,12 @@ class Extractor:
 
     def extract_portfolio_data(self, portfolio_info):
         self.portfolio_data = pd.DataFrame(columns=portfolio_info['columns_for_portfolio_data'])
+        tickers = self.web_data['Symbol'].values
+
         for position in self.portfolio_instance.payload.positions:
             ticker = position.ticker
 
-            if ticker not in 'USD000UTSTOM' and ticker in self.web_data['Symbol'].values:
+            if ticker not in 'USD000UTSTOM' and ticker in tickers:
                 amount = position.lots
                 price = position.average_position_price.value
 
@@ -65,9 +67,3 @@ class Extractor:
         self.extract_portfolio_data(self.config['portfolio_info'])
         self.get_portfolio_balances()
         self.calculate_asset_weight()
-
-
-if __name__ == '__main__':
-    instance = Extractor('/home/user/utils/applied-alghorithmic-trading-strategies/config.json')
-    instance.extract_web_data(instance.config['url_info'])
-    print(instance.web_data)
