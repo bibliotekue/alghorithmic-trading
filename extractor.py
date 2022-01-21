@@ -55,7 +55,7 @@ class Extractor:
 
         self.total_balance = self.usd_balance + self.investments_balance
 
-    def calculate_asset_weight(self):
+    def calculate_assets_weights(self):
         for elem in self.portfolio_data.itertuples():
             ticker = elem[1]
             asset_investments = elem[5]
@@ -66,4 +66,4 @@ class Extractor:
         self.extract_web_data(self.config['url_info'])
         self.extract_portfolio_data(self.config['portfolio_info'])
         self.get_portfolio_balances()
-        self.calculate_asset_weight()
+        self.calculate_assets_weights()
