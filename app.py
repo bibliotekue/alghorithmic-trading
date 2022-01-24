@@ -65,12 +65,9 @@ def printer(stocks):
         amount_left = amount_sides // 2 - 1
         amount_right = amount_sides - amount_left - 1
 
-        print(f"-{' ' * stock_left}{stock}{' ' * stock_right}-{' ' * amount_left}{amount}{' ' * amount_right}-")
+        print(f"-{' ' * stock_left}{stock}{' ' * stock_right}-{' ' * amount_left}{amount}{' ' * amount_right}-", end='\n')
+        print('* - * - * - * - * - * -  *')
 
-#         print(f'''
-# -   {stock}    -
-# * - * - * - *''', end='')
 
-    # print(extractor_instance.usd_balance)
 printer(stocks)
-# df.to_csv('rec.csv')
+

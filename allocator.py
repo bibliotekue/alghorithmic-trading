@@ -35,8 +35,9 @@ class Allocator:
             required_allocation = self.total_balance * required_weight
             required_investments = required_allocation - total_asset_sum
             if required_investments > 0:
-                required_amount = required_investments / Decimal(official_price)
-                return required_investments, required_weight, required_amount
+                if int(official_price):
+                    required_amount = required_investments / Decimal(official_price)
+                    return required_investments, required_weight, required_amount
         return 0, 0, 0
 
     def run(self):
