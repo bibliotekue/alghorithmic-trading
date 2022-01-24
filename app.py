@@ -5,13 +5,27 @@ from secrets import TOKEN, CONFIG_PATH
 from src.extractor import Extractor
 from src.allocator import Allocator
 from src.funcs import get_config, get_approximated_values, get_printed
+from src.ui import args
 
+
+INDEXES = {
+    'sp500': 'sp500',
+    'nasdaq': 'nasdaq100',
+    'dowjones': 'dowjones'
+}
+
+INDEX_ARG = args.index
 
 # get config
 config = get_config(CONFIG_PATH)
 
 # get client instance
 client = tinvest.SyncClient(TOKEN)
+
+# argparser
+if INDEX_ARG.lower() in INDEXES.keys():
+    config['extractor']['url_info']['index'] = INDEXES[INDEX_ARG.lower()]
+    print(config['extractor']['url_info']['index'])
 
 # get extractor instance
 extractor_instance = Extractor(

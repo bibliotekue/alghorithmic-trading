@@ -4,13 +4,6 @@ from decimal import Decimal
 import math
 
 
-INDEXES = {
-    'sp500': 'sp500',
-    'nasdaq': 'nasdaq100',
-    'dowjones': 'dowjones'
-}
-
-
 def get_config(absolute_path):
     if os.path.isfile(absolute_path):
         with open(absolute_path) as file:
