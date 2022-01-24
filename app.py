@@ -5,20 +5,25 @@ from decimal import Decimal
 from secrets import TOKEN, CONFIG_PATH
 from extractor import Extractor
 from allocator import Allocator
+from funcs import get_config, get_approximated_values
+
+
+# get config
+config = get_config(CONFIG_PATH)
 
 # get client instance
 client = tinvest.SyncClient(TOKEN)
 
 extractor_instance = Extractor(
     client_instance=client,
-    config_path=CONFIG_PATH)
+    config=config['extractor'])
 
 extractor_instance.run()
 
 allocator_instance = Allocator(
     data=[extractor_instance.web_data, extractor_instance.portfolio_data],
     balances=[extractor_instance.usd_balance, extractor_instance.total_balance],
-    config_path=CONFIG_PATH)
+    config=config['allocator'])
 
 df = allocator_instance.run()
 

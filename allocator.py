@@ -6,8 +6,8 @@ from decimal import Decimal
 
 class Allocator:
 
-    def __init__(self, data, balances, config_path):
-        self.config = get_config(config_path)['allocator']
+    def __init__(self, data, balances, config):
+        self.config = config
 
         self.web_data, self.portfolio_data = data
         self.usd_balance, self.total_balance = balances

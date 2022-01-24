@@ -6,8 +6,8 @@ import funcs
 
 class Extractor:
 
-    def __init__(self, client_instance, config_path):
-        self.config = funcs.get_config(config_path)['extractor']
+    def __init__(self, client_instance, config):
+        self.config = config
 
         self.portfolio_instance = client_instance.get_portfolio()
         self.currencies_instance = client_instance.get_portfolio_currencies()
