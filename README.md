@@ -1,1 +1,1 @@
-# applied-alghorithmic-trading-strategies
+# index-equal-weight-balance
