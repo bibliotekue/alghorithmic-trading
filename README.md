@@ -1,1 +1,1 @@
-# index-equal-weight-balance
+# Index Equal Weight Balance
