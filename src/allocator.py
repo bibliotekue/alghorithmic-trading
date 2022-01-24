@@ -1,6 +1,4 @@
-from funcs import get_config
 import pandas as pd
-from secrets import CONFIG_PATH
 from decimal import Decimal
 
 
