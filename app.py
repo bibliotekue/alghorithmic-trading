@@ -4,7 +4,7 @@ from secrets import TOKEN, CONFIG_PATH
 
 from src.extractor import Extractor
 from src.allocator import Allocator
-from src.funcs import get_config, get_approximated_values, get_printed
+from src.funcs import get_config, get_approximated_amount, get_printed
 from src.ui import args
 
 
@@ -45,7 +45,7 @@ df = allocator_instance.run()
 df.sort_values('required_weight', inplace=True, ascending=False)
 
 # approximating
-stocks = get_approximated_values(df, extractor_instance.usd_balance)
+stocks = get_approximated_amount(df, extractor_instance.usd_balance)
 
 # printing allocation
 get_printed(stocks)
