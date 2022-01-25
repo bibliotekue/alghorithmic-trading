@@ -2,10 +2,10 @@ import tinvest
 
 from secrets import TOKEN, CONFIG_PATH
 
+from src.consoller import args
 from src.extractor import Extractor
 from src.allocator import Allocator
 from src.funcs import get_config, get_approximated_amount, get_printed
-from src.ui import args
 
 
 INDEXES = {
