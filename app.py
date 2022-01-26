@@ -1,6 +1,6 @@
 import tinvest
 
-from secrets import TOKEN, CONFIG_PATH
+from utils.secrets import TOKEN, CONFIG_PATH
 
 from src.consoller import args
 from src.extractor import Extractor
