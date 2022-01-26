@@ -1,2 +1,0 @@
-TOKEN = ''
-CONFIG_PATH = ''
