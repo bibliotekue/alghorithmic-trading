@@ -9,10 +9,10 @@ from decimal import Decimal
 
 def get_config(absolute_path: str) -> dict:
     '''
-    Read config from json file and loads it to a python dictionary object
+    Read config from json file and loads it to a python dictionary object.
 
-    :param absolute_path: your absolute path to config which already exists in project root
-    :return: config file as a python dictionary
+    :param absolute_path: your absolute path to config which already exists in project root.
+    :return: config file as a python dictionary.
     '''
 
     if os.path.isfile(absolute_path):
@@ -23,11 +23,11 @@ def get_config(absolute_path: str) -> dict:
 
 def get_approximated_amount(df: pd.DataFrame, usd_balance: Decimal) -> defaultdict:
     '''
-    Calculate approximate amount of stocks to buy based on recommended allocations
+    Calculate approximate amount of stocks to buy based on recommended allocations.
 
-    :param df: pandas DataFrame with recommended allocations
-    :param usd_balance: dollar balance of your Tinkoff.Invest portfolio
-    :return: a dict with ticker as a key and amount of stocks to buy as a value
+    :param df: pandas DataFrame with recommended allocations.
+    :param usd_balance: dollar balance of your Tinkoff.Invest portfolio.
+    :return: a dict with ticker as a key and amount of stocks to buy as a value.
     '''
     stocks = defaultdict()
 
@@ -49,10 +49,10 @@ def get_approximated_amount(df: pd.DataFrame, usd_balance: Decimal) -> defaultdi
 
 def get_printed(stocks: defaultdict) -> None:
     '''
-    Outputs the needed allocation for mirroring the chosen Index to the console in a pretty format
+    Outputs the needed allocation for mirroring the chosen Index to the console in a pretty format.
 
-    :param stocks: dict with ticker as a key and amount of stocks to buy as a value
-    :return: None, just printing pretty result to console
+    :param stocks: dict with ticker as a key and amount of stocks to buy as a value.
+    :return: None, just printing pretty result to console.
     '''
     shift = 13
 
