@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 import pandas as pd
+from decimal import Decimal
 
 import tinvest
 
@@ -24,14 +25,15 @@ class Extractor:
         self.portfolio_instance = client_instance.get_portfolio()
         self.currencies_instance = client_instance.get_portfolio_currencies()
 
-        self.web_data = None
-        self.portfolio_data = None
+        # self.web_data = None
+        # self.portfolio_data = None
 
         self.usd_balance = 0  # your usd balance in Tinkoff.Invest
         self.investments_balance = 0  # amount of money in financial instruments
         self.total_balance = 0  # sum of your usd balance and investments
 
-    def extract_web_data(self, url_info: dict) -> None:
+    @staticmethod
+    def extract_web_data(url_info: dict) -> pd.DataFrame:
         '''
         Extracting data about chosen Index from web-site which includes these fields:
         "#", "Company", "Symbol", "Weight", "Price" and save it to DataFrame.
@@ -44,19 +46,26 @@ class Extractor:
         soup = BeautifulSoup(response.text, url_info['parser'])
         index_info = soup.find(url_info['tag'], class_=url_info['attrs'])
 
-        self.web_data = pd.read_html(str(index_info))[0]
-        self.web_data = self.web_data[url_info['columns_for_web_data']]
+        # self.web_data = pd.read_html(str(index_info))[0]
+        # self.web_data = self.web_data[url_info['columns_for_web_data']]
 
-    def extract_portfolio_data(self, portfolio_info: dict) -> None:
+        web_data = pd.read_html(str(index_info))[0]
+        web_data = web_data[url_info['columns_for_web_data']]
+
+        return web_data
+
+    def extract_portfolio_data(self, portfolio_info: dict, web_data: pd.DataFrame) -> pd.DataFrame:
         '''
         Extracting data about chosen Index from Tinkoff.Invest which includes these fields:
         "Asset", "Amount", "Price", "Weight", "Asset_investments" and save it to DataFrame.
 
         :param portfolio_info: python dictionary with info about your portfolio defined in config file.
-        :return: None
+        :param web_data: an extracting data from web source
+        :return: a Dataframe with portfolio information
         '''
-        self.portfolio_data = pd.DataFrame(columns=portfolio_info['columns_for_portfolio_data'])
-        tickers = self.web_data['Symbol'].values
+
+        portfolio_data = pd.DataFrame(columns=portfolio_info['columns_for_portfolio_data'])
+        tickers = web_data['Symbol'].values
 
         for position in self.portfolio_instance.payload.positions:
             ticker = position.ticker
@@ -67,7 +76,7 @@ class Extractor:
 
                 asset_investments = price * amount
 
-                self.portfolio_data = self.portfolio_data.append(pd.DataFrame([[
+                portfolio_data = portfolio_data.append(pd.DataFrame([[
                                                                 ticker,
                                                                 amount,
                                                                 price,
@@ -75,33 +84,46 @@ class Extractor:
                                                                 asset_investments]],
                                             columns=portfolio_info['columns_for_portfolio_data']))
 
-    def get_portfolio_balances(self) -> None:
+        return portfolio_data
+
+    def get_portfolio_balances(self, portfolio_data: pd.DataFrame) -> tuple[Decimal, int, int]:
         '''
         Extracting data about your Tinkoff.Invest balances such as:
         "Usd balance", "Investments balance", "Total balance" by using "tinvest" methods.
 
+        :param portfolio_data: a Dataframe with portfolio information
         :return: None
         '''
-        self.usd_balance = self.currencies_instance.payload.currencies[2].balance
-        self.investments_balance = sum(self.portfolio_data['asset_investments'])
+        usd_balance = self.currencies_instance.payload.currencies[2].balance
+        investments_balance = sum(portfolio_data['asset_investments'])
 
-        self.total_balance = self.usd_balance + self.investments_balance
+        total_balance = usd_balance + investments_balance
 
-    def calculate_assets_weights(self) -> None:
+        return usd_balance, investments_balance, total_balance
+
+    @staticmethod
+    def calculate_assets_weights(portfolio_data: pd.DataFrame, total_balance: int) -> None:
         '''
         Calculates assets weights in your Tinkoff.Invest portfolio by looping "portfolio_data" and write it in "weight"
         column in portfolio DataFrame.
 
+        :param portfolio_data: a Dataframe with portfolio information
+        :param total_balance: total balance in the portfolio
         :return: None
         '''
-        for elem in self.portfolio_data.itertuples():
+        for elem in portfolio_data.itertuples():
             ticker = elem[1]
             asset_investments = elem[5]
-            weight = asset_investments / self.total_balance
-            self.portfolio_data.loc[self.portfolio_data['asset'] == ticker, 'weight'] = weight
+            weight = asset_investments / total_balance
+            portfolio_data.loc[portfolio_data['asset'] == ticker, 'weight'] = weight
 
-    def run(self) -> None:
-        self.extract_web_data(self.config['url_info'])
-        self.extract_portfolio_data(self.config['portfolio_info'])
-        self.get_portfolio_balances()
-        self.calculate_assets_weights()
+    def run(self) -> list:
+        web_data = self.extract_web_data(self.config['url_info'])
+
+        portfolio_data = self.extract_portfolio_data(self.config['portfolio_info'], web_data)
+
+        usd_balance, investment_balance, total_balance = self.get_portfolio_balances(portfolio_data)
+
+        self.calculate_assets_weights(portfolio_data, total_balance)
+
+        return [[web_data, portfolio_data], [usd_balance, total_balance]]

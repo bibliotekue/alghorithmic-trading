@@ -22,7 +22,7 @@ class Allocator:
         self.web_data, self.portfolio_data = data
         self.usd_balance, self.total_balance = balances
 
-    def parse_elem(self, elem: tuple) -> (str, Decimal, Decimal):
+    def parse_elem(self, elem: tuple) -> [str, Decimal, Decimal]:
         '''
         This method extracts data from pandas itertuples object such as "Symbol", "Official_weight" and "Official_price"
 

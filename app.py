@@ -32,12 +32,12 @@ extractor_instance = Extractor(
     client_instance=client,
     config=config['extractor'])
 
-extractor_instance.run()
+data, balances = extractor_instance.run()
 
 # get allocator instance
 allocator_instance = Allocator(
-    data=[extractor_instance.web_data, extractor_instance.portfolio_data],
-    balances=[extractor_instance.usd_balance, extractor_instance.total_balance],
+    data=data,
+    balances=balances,
     config=config['allocator'])
 
 df = allocator_instance.run()
@@ -45,7 +45,7 @@ df = allocator_instance.run()
 df.sort_values('required_weight', inplace=True, ascending=False)
 
 # approximating
-stocks = get_approximated_amount(df, extractor_instance.usd_balance)
+stocks = get_approximated_amount(df=df, usd_balance=balances[0])
 
 # printing allocation
 get_printed(stocks)
