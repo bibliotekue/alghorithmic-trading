@@ -90,7 +90,7 @@ class Allocator:
                                                                                                 official_price,
                                                                                                 total_asset_sum)
 
-            # adding recommendation
+            # adding recommendation to DataFrame
             df = df.append(pd.DataFrame([[
                 symbol,
                 required_investments,
