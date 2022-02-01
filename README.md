@@ -26,7 +26,7 @@ The script does not perform financial transactions, only uses the current portfo
 
 **Set API key and Config absolute path in secrets.py**
 
-    TOKEN = 'your_api_token'
+    TOKEN = 'your_tinkoff_api_token'
     
     CONFIG_PATH = 'your_config_absolute_path'
     
