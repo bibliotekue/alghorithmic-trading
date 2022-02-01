@@ -25,9 +25,6 @@ class Extractor:
         self.portfolio_instance = client_instance.get_portfolio()
         self.currencies_instance = client_instance.get_portfolio_currencies()
 
-        # self.web_data = None
-        # self.portfolio_data = None
-
         self.usd_balance = 0  # your usd balance in Tinkoff.Invest
         self.investments_balance = 0  # amount of money in financial instruments
         self.total_balance = 0  # sum of your usd balance and investments
@@ -45,9 +42,6 @@ class Extractor:
         response = requests.get(url_info['url'] + url_info['index'], headers=url_info['header'])
         soup = BeautifulSoup(response.text, url_info['parser'])
         index_info = soup.find(url_info['tag'], class_=url_info['attrs'])
-
-        # self.web_data = pd.read_html(str(index_info))[0]
-        # self.web_data = self.web_data[url_info['columns_for_web_data']]
 
         web_data = pd.read_html(str(index_info))[0]
         web_data = web_data[url_info['columns_for_web_data']]
