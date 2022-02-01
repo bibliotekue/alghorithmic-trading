@@ -25,10 +25,6 @@ class Extractor:
         self.portfolio_instance = client_instance.get_portfolio()
         self.currencies_instance = client_instance.get_portfolio_currencies()
 
-        self.usd_balance = 0  # your usd balance in Tinkoff.Invest
-        self.investments_balance = 0  # amount of money in financial instruments
-        self.total_balance = 0  # sum of your usd balance and investments
-
     @staticmethod
     def extract_web_data(url_info: dict) -> pd.DataFrame:
         '''
