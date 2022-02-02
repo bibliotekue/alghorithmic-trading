@@ -35,6 +35,6 @@ The script does not perform financial transactions, only uses the current portfo
     python app.py -i <index_name>
 
 There is only 3 american Indexes such as:
-- SP500 (run script with _p500_ in index argument)
+- SP500 (run script with _sp500_ in index argument)
 - NASDAQ (run script with _nasdaq_ in index argument)
 - DOW JONES (run script with _dowjones_ in index argument)
